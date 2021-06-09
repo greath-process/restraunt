@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="ru" class="no-js">
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        <meta charset="UTF-8">
+        <title>Orders</title>
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Generate using http://realfavicongenerator.net/ -->
+        <meta name="theme-color" content="#000">
+        <link rel="stylesheet" type="text/css" href="css/vendor.css">
+        <link rel="stylesheet" type="text/css" href="styles.css">
+        <link rel="stylesheet" type="text/css" href="template_styles.css">
+        <link rel="stylesheet" type="text/css" href="css/components.css">
+        <script>
+            document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/, 'js');
+
+        </script>
+        <script src="js/vendor.js"></script>
+        <script src="js/bundle.js"></script>
+    </head>
+    <body>
+        <svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
+            <symbol id="chevron-down" viewBox="0 0 16 10" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8.002 6.773L2.18.952a1.061 1.061 0 00-1.5 1.5l6.614 6.614a.999.999 0 001.414 0l6.614-6.614a1.061 1.061 0 00-1.5-1.5l-5.821 5.82z" />
+                <path d="M8.002 6.773L2.18.952a1.061 1.061 0 00-1.5 1.5l6.614 6.614a.999.999 0 001.414 0l6.614-6.614a1.061 1.061 0 00-1.5-1.5l-5.821 5.82z" />
+            </symbol>
+            <symbol id="chevron-up" viewBox="0 0 1024 574">
+                <path d="M1015 564q-10 10-23 10t-23-10L512 82 55 564q-10 10-23 10T9 564q-9-10-9-24t9-24L489 10q10-10 23-10t23 10l480 506q9 10 9 24t-9 24z" />
+            </symbol>
+            <symbol id="chevron-right" viewBox="0 0 13 12" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M7.25691 11.2421C6.92358 11.5754 6.75691 11.7421 6.5498 11.7421C6.5498 11.7421 6.5498 11.7421 6.5498 11.7421C6.3427 11.7421 6.17603 11.5754 5.8427 11.2421C5.50936 10.9088 5.3427 10.7421 5.3427 10.535C5.3427 10.535 5.3427 10.535 5.3427 10.535C5.3427 10.3279 5.50936 10.1612 5.8427 9.8279L9.67112 5.99947L5.8427 2.17104C5.50936 1.83771 5.3427 1.67104 5.3427 1.46394C5.3427 1.25683 5.50936 1.09016 5.8427 0.756831C6.17603 0.423498 6.3427 0.256831 6.5498 0.256831C6.75691 0.256831 6.92358 0.423498 7.25691 0.756831L11.7924 5.29236C12.1258 5.6257 12.2924 5.79236 12.2924 5.99947C12.2924 6.20658 12.1258 6.37324 11.7924 6.70658L7.25691 11.2421Z" />
+            </symbol>
+            <symbol id="chevron-left" viewBox="0 0 13 12" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M5.743 11.242c.333.333.5.5.707.5.207 0 .374-.167.707-.5.333-.333.5-.5.5-.707 0-.207-.167-.374-.5-.707L3.33 5.999l3.828-3.828c.333-.333.5-.5.5-.707 0-.207-.167-.374-.5-.707-.333-.334-.5-.5-.707-.5-.207 0-.374.166-.707.5L1.207 5.292c-.333.334-.5.5-.5.707 0 .208.167.374.5.708l4.536 4.535z" />
+            </symbol>
+            <symbol id="times" viewBox="0 0 12 12">
+                <path d="M2.65 2L2 2.65 5.35 6 2 9.35l.65.65L6 6.65 9.35 10l.65-.65L6.65 6 10 2.65 9.35 2 6 5.35 2.65 2z" />
+            </symbol>
+        </svg>
+        <script id="tmpl-basket-item" type="text/x-mustache-template"> <div class="basket-list__item">
+		<div class="item-row u-row" data-item data-product-id="<% productId %>" data-actions="active,swipe" data-tags="<% tags %>">
+			<div class="item-row__aside item-row__aside_left u-col">
+				<div class="c-ctrl c-ctrl_check item-row__check c-ctrl_default c-ctrl_icon-only">
+					<input class="c-ctrl__input" type="checkbox" id="item-<% productId %>" name="CHECKED">
+					<label class="c-ctrl__title" for="item-<% productId %>"></label>
+				</div>
+			</div>
+			<div class="item-row__inner u-col">
+				<div class="item-row__body u-row u-align-center">
+					<div class="item-row__title u-col">
+						<div class="inline-list c-body c-body_xxs">
+							<div class="inline-list__item">
+								<span class="c-body c-body_sm" data-item-code><% code %></span>
+							</div>
+							<div class="inline-list__item">
+								<span class="c-body c-body_sm" data-item-title><% title %></span>
+							</div>
+							<% #offer %>
+								<div class="inline-list__item">
+								<span class="c-body c-body_sm"><% offer %></span>
+								</div>
+							<% /offer %>
+						</div>
+					</div>
+					<% ^offer %>
+						<div class="item-row__time u-col" data-item-time>
+							<div class="c-status c-status_icon-before c-status_success">
+								<svg xmlns="http://www.w3.org/2000/svg" class="c-status__icon svg-ico_no-stroke u-order-0 svg-ico">
+									<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="images/svg.svg#timer-progress-pending"></use>
+								</svg>
+								<span><% time %></span>
+							</div>
+						</div>
+					<% /offer %>
+					<div class="item-row__price u-col"><span data-item-price><% price %></span>
+					</div>
+				</div>
+				<div class="item-row__footer c-body c-body_xxs u-hidden"></div>
+			</div>
+			<div class="item-row__aside-right u-col">
+				<div class="controls-panel">
+					<div class="controls-list u-row u-align-center">
+						<div class="controls-list__item">
+							<button class="item-row__btn c-btn c-btn_default c-btn_secondary" type="button">
+								<svg xmlns="http://www.w3.org/2000/svg" class="item-row__btn-icon u-centered svg-ico_no-stroke svg-ico">
+									<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="images/svg.svg#copy"></use>
+								</svg>
+							</button>
+						</div>
+						<div class="controls-list__item">
+							<button class="item-row__btn c-btn c-btn_default c-btn_secondary item-row__btn_delete" type="button">
+								<svg xmlns="http://www.w3.org/2000/svg" class="item-row__btn-icon u-centered svg-ico_no-stroke svg-ico">
+									<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="images/svg.svg#trash"></use>
+								</svg>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</script>
+        <script id="tmpl-basket-group" type="text/x-mustache-template"> <div class="basket-group" data-basket data-group="<% index %>" data-state="default" data-view="guests">
+		<div class="basket-group__head">
+			<div class="u-row u-justify-space-between">
+			<div class="u-col">
+				<div class="inline-list">
+				<div class="inline-list__item c-subtitle c-subtitle_lg">
+					<span>Guest <% index %></span>
+				</div>
+				<div class="inline-list__item c-subtitle c-subtitle_lg u-color-active-gray" data-basket-total>
+					0 Items
+				</div>
+				</div>
+			</div>
+			<div class="u-col">
+				<div class="controls-list u-row">
+				<div class="controls-list__item u-col" data-display-state="default">
+					<a class="c-btn c-btn_link c-btn_primary c-btn_sm" href="javascript:;" data-set-state="edit">Edit</a>
+				</div>
+				<div class="controls-list__item u-col" data-display-state="edit">
+					<a class="c-btn c-btn_link c-btn_primary c-btn_sm" href="javascript:;" data-state-action="move">Move to...</a>
+				</div>
+				<div class="controls-list__item u-col" data-display-state="edit">
+					<a class="c-btn c-btn_link c-btn_primary c-btn_sm" href="javascript:;" data-set-state="default" data-state-action="save">Done</a>
+				</div>
+				<div class="controls-list__item u-col" data-display-state="edit">
+					<a class="c-btn c-btn_link c-btn_text c-btn_sm" href="javascript:;" data-set-state="default" data-state-action="cancel">Cancel</a>
+				</div>
+				<div class="controls-list__item u-col" data-display-state="edit">
+					<a class="c-btn c-btn_link c-btn_error c-btn_sm" href="javascript:;" data-state-action="delete">Remove</a>
+				</div>
+				</div>
+			</div>
+			</div>
+		</div>
+		<div class="basket-list">
+			<div class="basket-list__list" data-items-list>
+			</div>
+			<div class="basket-list__footer">
+			<button class="basket-btn c-btn c-btn_default c-btn_secondary c-btn_full u-color-active-gray u-text-left" type="button" data-keyboard-ref>Tap the manu button on keyboard to add items in order</button>
+			</div>
+		</div>
+	</div>
+</script>
+        <script id="tmpl-tracker-panel-open" type="text/x-mustache-template"> <div class="tracker-panel" data-panel="open">
+		<div class="tracker-panel__title c-number c-number_xxl">New Day</div>
+		<div class="c-body c-body_xl"><% dayLength %> planned for today</div>
+
+		<div class="tracker-panel__controls">
+			<button class="buttons-menu__link c-btn c-btn_default c-btn_primary c-btn_full" type="button" data-action="open">Open Working Day</button>
+		</div>
+	</div>
+</script>
+        <script id="tmpl-tracker-panel-break-start" type="text/x-mustache-template"> <div class="tracker-panel" data-panel="break-start">
+		<button class="c-overlay__btn" type="button" title="Close">
+			
+
+<svg xmlns="http://www.w3.org/2000/svg" class="c-overlay__btn-icon svg-ico" >
+    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="images/svg.svg#times"></use>
+</svg>
+
+
+		</button>
+		<div class="tracker-panel__title c-title c-title_xl">Select a break time</div>
+
+		<div class="tracker-panel__body">
+			<ul class="timers-list u-row u-justify-center">
+				<% #breaks %>
+				<li class="timers-list__item u-col">
+					<input class="timers-list__input u-hidden-visually" type="radio" name="BREAK_TIME" value="<% value %>" id="timers-list-input-<% index %>">
+					<label class="timers-list__label" for="timers-list-input-<% index %>">
+						<span class="timers-list__title c-number c-number_xxl"><% value %></span>
+						<span class="timers-list__subtitle c-body c-body_xl">min</span>
+					</label>
+				</li>
+				<% /breaks %>
+			</ul>
+		</div>
+	</div>
+</script>
+        <script id="tmpl-tracker-panel-break-progress" type="text/x-mustache-template"> <div class="tracker-panel" data-panel="break-progress">
+		<button class="c-overlay__btn" type="button" title="Close">
+			
+
+<svg xmlns="http://www.w3.org/2000/svg" class="c-overlay__btn-icon svg-ico" >
+    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="images/svg.svg#times"></use>
+</svg>
+
+
+		</button>
+		<div class="tracker-panel__title c-title c-title_xl">Your break time</div>
+
+		<div class="tracker-panel__body">
+			<div class="c-countdown c-number c-number_xxl" data-progressbar data-current="<% timePassed %>" data-limit="<% breakLength * 60 %>">
+				<span class="progressbar__timer" data-timer>00:00:00</span>
+			</div>
+			<div class="c-body c-body_xl"><% breakLength %> min</div>
+		</div>
+
+		<div class="tracker-panel__controls">
+			<button class="buttons-menu__link c-btn c-btn_default c-btn_primary c-btn_full" type="button" data-action="break">Finish Break</button>
+		</div>
+	</div>
+</script>
+        <script id="tmpl-tracker-panel-close-start" type="text/x-mustache-template"> <div class="tracker-panel" data-panel="close-start">
+		<button class="c-overlay__btn" type="button" title="Close">
+			
+
+<svg xmlns="http://www.w3.org/2000/svg" class="c-overlay__btn-icon svg-ico" >
+    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="images/svg.svg#times"></use>
+</svg>
+
+
+		</button>
+		<div class="tracker-panel__title c-title c-title_xl">Your working day today</div>
+
+		<div class="tracker-panel__body">
+			<ul class="timers-list u-row u-justify-center">
+				<% #data %>
+				<li class="timers-list__item u-col">
+					<div class="timers-list__label timers-list__label_secondary">
+						<span class="timers-list__title c-number c-number_xxl"><% value %></span>
+						<span class="timers-list__subtitle c-body c-body_xl"><% key %></span>
+					</div>
+				</li>
+				<% /data %>
+			</ul>
+		</div>
+
+		<div class="tracker-panel__controls">
+			<button class="buttons-menu__link c-btn c-btn_default c-btn_error c-btn_full" type="button" data-action="close">Confirm & Close Day</button>
+		</div>
+	</div>
+</script>
+        <script id="tmpl-table-card" type="text/x-mustache-template"> <div class="table-card tables-list-popup">
+		<div class="table-card__body">
+			<div class="table-card__time c-caption c-caption_xs" data-time><% time %></div>
+			<div class="table-card__title c-title c-title_md" data-title><% title %></div>
+			<div class="inline-list c-body c-body_xs u-color-active-gray">
+				<div class="inline-list__item u-hidden" data-guests><% guests %></div>
+				<div class="inline-list__item u-hidden" data-sits><% sits %></div>
+				<div class="inline-list__item u-hidden" data-floor><% floor %></div>
+			</div>
+			<div class="table-card__price c-body c-body_sm" data-price><% price %></div>
+			<div class="table-card__badges u-hidden" data-badges>
+				<% #badges %>
+					<div class="c-badge c-badge_secondary c-badge_sm"><% . %></div>
+				<% /badges %>
+			</div>
+		</div>
+		<div class="table-card__controls">
+			<a class="c-btn c-btn_default c-btn_primary c-btn_lg c-btn_full u-hidden" href="<% action_path %>" data-action><% action %></a>
+		</div>
+	</div>
+</script>
+        <div class="c-page">
+            <div class="content ">
+                <div class="c-container">
+                    <main class="content__main">
+                        <div class="content__col content__opened">
+                            <div class="c-panel ">
+                                <div class="c-panel__head">
+                                    <div class="c-panel__head-top u-row">
+                                        <div class="u-col">
+                                            <h2 class="c-title c-title_xl"> Openned <sup class="c-sup c-body c-body_xs">4</sup>
+                                            </h2>
+                                        </div>
+                                        <div class="u-col">
+                                            <div class="controls-list u-row">
+                                                <div class="controls-list__item u-col">
+                                                    <button class="c-btn panel-btn" type="button">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="panel-btn__icon u-centered svg-ico_no-stroke svg-ico" width="14" height="14">
+                                                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#chevron-left"></use>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                                <div class="controls-list__item u-col">
+                                                    <button class="c-btn panel-btn" type="button">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="panel-btn__icon u-centered svg-ico_no-stroke svg-ico" width="14" height="14">
+                                                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#chevron-right"></use>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="c-panel__body ">
+                                    <div class="orders-list orders-list_tables">
+                                        <div class="orders-list__list">
+                                            <div class="orders-list__item">
+                                                <div class="order-item order-item_active" data-code-table-basket="[{'a1':'a1','a2':'a2','a3':'a3','a4':'a4'}]">
+                                                    <div class="order-item__top u-row u-justify-space-between">
+                                                        <div class="order-item__time u-col c-caption c-caption_xs">18:44</div>
+                                                    </div>
+                                                    <div class="order-item__title c-title c-title_md">Table 8</div>
+                                                    <div class="order-item__clients inline-list c-body c-body_xs u-color-active-gray">
+                                                        <div class="inline-list__item">2&nbsp;guests</div>
+                                                    </div>
+                                                    <div class="order-item__sum">
+                                                        <div class="order-item__total c-body c-body_sm"> $62,00 </div>
+                                                    </div>
+                                                    <div class="order-item__tags">
+                                                        <ul class="badges-list u-row order-item__taglist order-item__taglist_order">
+                                                            <li class="badges-list__item u-col">
+                                                                <div class="c-badge c-badge_secondary c-badge_sm"> Non-Smoking </div>
+                                                            </li>
+                                                            <li class="badges-list__item u-col">
+                                                                <div class="c-badge c-badge_secondary c-badge_sm"> Wifi </div>
+                                                            </li>
+                                                        </ul>
+                                                        <ul class="badges-list u-row order-item__taglist order-item__taglist_client">
+                                                            <li class="badges-list__item u-col">
+                                                                <div class="c-badge c-badge_primary c-badge_sm"> Gift Card 100 </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="orders-list__item">
+                                                <div class="order-item " data-code-table-basket="[{'a1':'a1','a2':'a2','a3':'a3','a4':'a4'}]">
+                                                    <div class="order-item__top u-row u-justify-space-between">
+                                                        <div class="order-item__time u-col c-caption c-caption_xs">19:02</div>
+                                                    </div>
+                                                    <div class="order-item__title c-title c-title_md">Table 13</div>
+                                                    <div class="order-item__clients inline-list c-body c-body_xs u-color-active-gray">
+                                                        <div class="inline-list__item">4&nbsp;guests</div>
+                                                    </div>
+                                                    <div class="order-item__sum">
+                                                        <div class="order-item__total c-body c-body_sm"> $117,00 </div>
+                                                    </div>
+                                                    <div class="order-item__tags">
+                                                        <ul class="badges-list u-row order-item__taglist order-item__taglist_order">
+                                                        </ul>
+                                                        <ul class="badges-list u-row order-item__taglist order-item__taglist_client">
+                                                            <li class="badges-list__item u-col">
+                                                                <div class="c-badge c-badge_primary c-badge_sm"> Gift Card 100 </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="orders-list__item">
+                                                <div class="order-item " data-code-table-basket="[{'a1':'a1','a2':'a2','a3':'a3','a4':'a4'}]">
+                                                    <div class="order-item__top u-row u-justify-space-between">
+                                                        <div class="order-item__time u-col c-caption c-caption_xs">19:30</div>
+                                                    </div>
+                                                    <div class="order-item__title c-title c-title_md">Table 9</div>
+                                                    <div class="order-item__clients inline-list c-body c-body_xs u-color-active-gray">
+                                                        <div class="inline-list__item">2&nbsp;guests</div>
+                                                    </div>
+                                                    <div class="order-item__sum">
+                                                        <div class="order-item__total c-body c-body_sm"> $80,00 </div>
+                                                    </div>
+                                                    <div class="order-item__tags">
+                                                        <ul class="badges-list u-row order-item__taglist order-item__taglist_order">
+                                                        </ul>
+                                                        <ul class="badges-list u-row order-item__taglist order-item__taglist_client">
+                                                            <li class="badges-list__item u-col">
+                                                                <div class="c-badge c-badge_primary c-badge_sm"> VIP </div>
+                                                            </li>
+                                                            <li class="badges-list__item u-col">
+                                                                <div class="c-badge c-badge_primary c-badge_sm"> 25% </div>
+                                                            </li>
+                                                            <li class="badges-list__item u-col">
+                                                                <div class="c-badge c-badge_primary c-badge_sm"> Allergy on honey </div>
+                                                            </li>
+                                                            <li class="badges-list__item badges-list__overflow u-col">
+                                                                <div class="c-badge c-badge_secondary c-badge_sm"> +2 </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="orders-list__item">
+                                                <div class="order-item " data-code-table-basket="[{'a1':'a1','a2':'a2','a3':'a3','a4':'a4'}]">
+                                                    <div class="order-item__top u-row u-justify-space-between">
+                                                        <div class="order-item__time u-col c-caption c-caption_xs">19:30</div>
+                                                    </div>
+                                                    <div class="order-item__title c-title c-title_md">Table 7</div>
+                                                    <div class="order-item__clients inline-list c-body c-body_xs u-color-active-gray">
+                                                        <div class="inline-list__item">2&nbsp;guests</div>
+                                                    </div>
+                                                    <div class="order-item__sum">
+                                                        <div class="order-item__total c-body c-body_sm"> $72,00 </div>
+                                                    </div>
+                                                    <div class="order-item__tags">
+                                                        <ul class="badges-list u-row order-item__taglist order-item__taglist_order">
+                                                        </ul>
+                                                        <ul class="badges-list u-row order-item__taglist order-item__taglist_client">
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <ul class="popup-menu u-text-right">
+                                            <li class="popup-menu__item">
+                                                <a class="popup-menu__link c-btn c-btn_default c-btn_primary c-btn_md c-btn_rounded" href="#"> Add Order </a>
+                                            </li>
+                                            <li class="popup-menu__item">
+                                                <a class="popup-menu__link c-btn c-btn_default c-btn_primary c-btn_md c-btn_rounded" href="#"> Check Out </a>
+                                            </li>
+                                            <li class="popup-menu__item">
+                                                <a class="popup-menu__link c-btn c-btn_default c-btn_primary c-btn_md c-btn_rounded" href="#"> Change Table </a>
+                                            </li>
+                                            <li class="popup-menu__item">
+                                                <a class="popup-menu__link c-btn c-btn_default c-btn_primary c-btn_md c-btn_rounded" href="#"> Change Waiter </a>
+                                            </li>
+                                            <li class="popup-menu__item">
+                                                <a class="popup-menu__link c-btn c-btn_default c-btn_primary c-btn_md c-btn_rounded" href="#"> Leave Comment </a>
+                                            </li>
+                                            <li class="popup-menu__item">
+                                                <a class="popup-menu__link c-btn c-btn_default c-btn_primary c-btn_md c-btn_rounded" href="#"> Add Guests </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="keyboard-toggle c-btn c-btn_default c-btn_tertiary c-btn_md c-btn_rounded" type="button">Keyboard</button>
+                        </div>
+                        <div class="content__col content__details">
+                            <div class="u-row">
+                                <div class="content__details-inner u-col">
+                                    <form class="order-form order-form_payment" action="/utility-order.html" method="POST" autocomplete="off" data-step="checkout">
+                                        <div class="order-form__head">
+                                            <div class="u-row u-justify-space-between u-align-end">
+                                                <div class="u-col">
+                                                    <div class="order-form__top inline-list c-subtitle c-subtitle_xs ">
+                                                        <div class="inline-list__item">Table 1</div>
+                                                        <div class="inline-list__item">2 guests</div>
+                                                    </div>
+                                                    <div class="order-form__info c-title c-title_xl u-color-text">
+                                                        <div class="inline-list">
+                                                            <div class="inline-list__item">Total</div>
+                                                            <div class="inline-list__item" data-total>$69,00</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="order-form__controls u-col">
+                                                    <div class="u-row">
+                                                        <div class="order-form__ctrl u-col">
+                                                            <button class="order-btn c-btn c-btn_default c-btn_primary c-btn_md c-btn_rounded" type="submit"> Get Bill </button>
+                                                        </div>
+                                                        <div class="order-form__ctrl u-col">
+                                                            <button class="order-btn c-btn c-btn_default c-btn_primary c-btn_md c-btn_rounded" type="submit"> Pay </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="order-form__inner">
+                                            <div class="order-form__body" data-simplebar-thin>
+                                                <div class="order-section">
+                                                    <div class="order-section__head u-row u-justify-space-between u-align-end">
+                                                        <div class="u-col u-col-5-10">
+                                                            <div class="c-subtitle c-subtitle_lg"> Overall </div>
+                                                        </div>
+                                                        <div class="u-col u-col-5-10">
+                                                            <div class="order-filter u-row u-justify-end u-align-center">
+                                                                <div class="order-filter__item u-col">
+                                                                    <a class="c-btn c-btn_link c-btn_primary c-btn_sm c-btn_active" href="javascript:;" data-view="overall">Overall Order</a>
+                                                                </div>
+                                                                <div class="order-filter__item u-col">
+                                                                    <a class="c-btn c-btn_link c-btn_primary c-btn_sm " href="javascript:;" data-view="guests">Separate Order</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="order-section__body">
+                                                        <div class="shopping-list shopping-list_quantity shopping-list_multiple-controls" data-items-list>
+                                                            <div class="shopping-list__item  ">
+                                                                <div class="u-row u-align-center">
+                                                                    <div class="shopping-list__title c-body c-body_sm u-col "> Grilled octopus </div>
+                                                                    <div class="shopping-list__quantity u-col">
+                                                                        <span class="c-caption c-caption_sm u-color-active-gray">×3</span>
+                                                                    </div>
+                                                                    <div class="shopping-list__value u-col ">
+                                                                        <input class="c-input c-input_default c-input_no-border c-input_text c-input_md" type="text" value="$60,00" placeholder="Type In Sum" name="N38" autocomplete="off" data-prop="price">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="shopping-list__item  ">
+                                                                <div class="u-row u-align-center">
+                                                                    <div class="shopping-list__title c-body c-body_sm u-col "> Red spaghetti lobster and zucchini </div>
+                                                                    <div class="shopping-list__quantity u-col">
+                                                                        <span class="c-caption c-caption_sm u-color-active-gray">×3</span>
+                                                                    </div>
+                                                                    <div class="shopping-list__value u-col ">
+                                                                        <input class="c-input c-input_default c-input_no-border c-input_text c-input_md" type="text" value="$42,00" placeholder="Type In Sum" name="N17" autocomplete="off" data-prop="price">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="shopping-list__item  ">
+                                                                <div class="u-row u-align-center">
+                                                                    <div class="shopping-list__title c-body c-body_sm u-col "> Malbec Luigi Bosca 2017 </div>
+                                                                    <div class="shopping-list__quantity u-col">
+                                                                        <span class="c-caption c-caption_sm u-color-active-gray">×1</span>
+                                                                    </div>
+                                                                    <div class="shopping-list__value u-col ">
+                                                                        <input class="c-input c-input_default c-input_no-border c-input_text c-input_md" type="text" value="$10,00" placeholder="Type In Sum" name="W17" autocomplete="off" data-prop="price">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="shopping-list__item shopping-list__item_control shopping-list__item_control-empty shopping-list__item_multiple-inputs" data-keyboard-ref>
+                                                                <div class="u-row u-align-center">
+                                                                    <div class="shopping-list__title c-body c-body_sm u-col "> + Add Items </div>
+                                                                    <div class="shopping-list__quantity u-col">
+                                                                        <input class="c-input c-input_default c-input_no-border c-input_text c-input_md" type="text" value="" placeholder="Type In Percent" autocomplete="off" data-prop="quantity" data-measure="%">
+                                                                    </div>
+                                                                    <div class="shopping-list__value u-col ">
+                                                                        <input class="c-input c-input_default c-input_no-border c-input_text c-input_md" type="text" value="" placeholder="Type In Sum" name="" autocomplete="off" data-prop="price">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="content__details-controls u-col">
+                                    <ul class="controls-menu">
+                                        <li class="controls-menu__item  ">
+                                            <a class="controls-menu__link " href="#" title="Order">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="controls-menu__icon svg-ico_no-fill svg-ico" width="19" height="24">
+                                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="images/svg.svg#triangle-right"></use>
+                                                </svg>
+                                                <span class="controls-menu__text">Order</span>
+                                            </a>
+                                        </li>
+                                        <li class="controls-menu__item controls-menu__item_active ">
+                                            <a class="controls-menu__link " href="#" title="Check Out">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="controls-menu__icon svg-ico_no-stroke svg-ico" width="16" height="16">
+                                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="images/svg.svg#arrow-right"></use>
+                                                </svg>
+                                                <span class="controls-menu__text">Check Out</span>
+                                            </a>
+                                        </li>
+                                        <li class="controls-menu__item  ">
+                                            <a class="controls-menu__link " href="#" title="Change Table">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="controls-menu__icon svg-ico_no-stroke svg-ico" width="18" height="18">
+                                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="images/svg.svg#numpad"></use>
+                                                </svg>
+                                                <span class="controls-menu__text">Change Table</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+                <!-- /.c-container -->
+                <div class="keyboard " data-state="bill">
+                    <div class="keyboard__top-panel keyboard-panel">
+                        <div class="c-container">
+                            <div class="keyboard-panel__body u-row">
+                                <div class="keyboard-panel__item-actions u-col">
+                                    <div class="controls-list u-row">
+                                        <div class="controls-list__item u-col" data-display-state="menu">
+                                            <a class="c-btn c-btn_link c-btn_light c-btn_sm" href="javascript:;" data-action="copy">Duplicate</a>
+                                        </div>
+                                        <div class="controls-list__item u-col" data-display-state="menu">
+                                            <a class="c-btn c-btn_link c-btn_error c-btn_sm" href="javascript:;" data-action="delete">Remove</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="keyboard-panel__tags u-col">
+                                </div>
+                                <div class="keyboard-panel__actions u-col">
+                                    <div class="controls-list u-row">
+                                        <div class="controls-list__item u-col" data-display-state="menu,bill,payment">
+                                            <a class="c-btn c-btn_link c-btn_light c-btn_sm" href="javascript:;" data-action="save">Done</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="keyboard__body">
+                        <div class="c-container">
+                            <div class="u-row">
+                                <div class="keyboard__numpad keyboard__col u-col">
+                                    <div class="numpad numpad_light numpad_sm">
+                                        <div class="numpad__list u-row">
+                                            <div class="numpad__item u-col u-col-4-12">
+                                                <button class="c-btn numpad__btn" type="button" data-action="1"> 1 </button>
+                                            </div>
+                                            <div class="numpad__item u-col u-col-4-12">
+                                                <button class="c-btn numpad__btn" type="button" data-action="2"> 2 </button>
+                                            </div>
+                                            <div class="numpad__item u-col u-col-4-12">
+                                                <button class="c-btn numpad__btn" type="button" data-action="3"> 3 </button>
+                                            </div>
+                                            <div class="numpad__item u-col u-col-4-12">
+                                                <button class="c-btn numpad__btn" type="button" data-action="4"> 4 </button>
+                                            </div>
+                                            <div class="numpad__item u-col u-col-4-12">
+                                                <button class="c-btn numpad__btn" type="button" data-action="5"> 5 </button>
+                                            </div>
+                                            <div class="numpad__item u-col u-col-4-12">
+                                                <button class="c-btn numpad__btn" type="button" data-action="6"> 6 </button>
+                                            </div>
+                                            <div class="numpad__item u-col u-col-4-12">
+                                                <button class="c-btn numpad__btn" type="button" data-action="7"> 7 </button>
+                                            </div>
+                                            <div class="numpad__item u-col u-col-4-12">
+                                                <button class="c-btn numpad__btn" type="button" data-action="8"> 8 </button>
+                                            </div>
+                                            <div class="numpad__item u-col u-col-4-12">
+                                                <button class="c-btn numpad__btn" type="button" data-action="9"> 9 </button>
+                                            </div>
+                                            <div class="numpad__item u-col u-col-4-12">
+                                                <button class="c-btn numpad__btn" type="button" data-action="."> , </button>
+                                            </div>
+                                            <div class="numpad__item u-col u-col-4-12">
+                                                <button class="c-btn numpad__btn" type="button" data-action="0"> 0 </button>
+                                            </div>
+                                            <div class="numpad__item u-col u-col-4-12">
+                                                <button class="c-btn numpad__btn numpad__btn_toned" type="button" data-action="backspace">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="numpad__btn-icon svg-ico_no-stroke svg-ico">
+                                                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="images/svg.svg#delete"></use>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="keyboard__menu keyboard__col u-col">
+                                    <div class="tiles-menu">
+                                        <ul class="tiles-menu__menu u-row ">
+                                            <li class="tiles-menu__item u-col u-loaded tiles-menu__item_multilevel u-col-4-12">
+                                                <a class="tile-item tile-item_" href="#" data-name="TIPS" data-public-name="Tips">
+                                                    <span class="tile-item__title c-title c-title_lg">Tips</span>
+                                                </a>
+                                                <div class="tiles-menu__panel">
+                                                    <div class="tiles-menu__panel-head">
+                                                        <div class="item-row item-row_heading u-row  inner-menu__link item-row_heading-alt">
+                                                            <div class="item-row__inner u-col">
+                                                                <div class="item-row__body u-row u-align-center">
+                                                                    <div class="item-row__title u-col">
+                                                                        <div class="c-title c-title_lg">Tips</div>
+                                                                    </div>
+                                                                    <div class="item-row__desc u-col">
+                                                                        <span class="c-btn c-btn_link c-btn_sm">All Actions</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="tiles-menu tiles-menu_columns">
+                                                        <ul class="tiles-menu__menu u-row">
+                                                            <li class="tiles-menu__item u-col u-col-3-12">
+                                                                <a class="tile-item tile-item_light" href="#" data-quantity="5">
+                                                                    <span class="tile-item__title c-title c-title_lg">5%</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="tiles-menu__item u-col u-col-3-12">
+                                                                <a class="tile-item tile-item_light" href="#" data-quantity="10">
+                                                                    <span class="tile-item__title c-title c-title_lg">10%</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="tiles-menu__item u-col u-col-3-12">
+                                                                <a class="tile-item tile-item_light" href="#" data-quantity="20">
+                                                                    <span class="tile-item__title c-title c-title_lg">20%</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="tiles-menu__item u-col u-col-3-12">
+                                                                <a class="tile-item tile-item_light" href="#" data-value="Optionally">
+                                                                    <span class="tile-item__title c-title c-title_lg">Optionally</span>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="tiles-menu__item u-col u-loaded tiles-menu__item_multilevel u-col-4-12">
+                                                <a class="tile-item tile-item_" href="#" data-name="DISCOUNT" data-public-name="Discount">
+                                                    <span class="tile-item__title c-title c-title_lg">Discount</span>
+                                                </a>
+                                                <div class="tiles-menu__panel">
+                                                    <div class="tiles-menu__panel-head">
+                                                        <div class="item-row item-row_heading u-row  inner-menu__link item-row_heading-alt">
+                                                            <div class="item-row__inner u-col">
+                                                                <div class="item-row__body u-row u-align-center">
+                                                                    <div class="item-row__title u-col">
+                                                                        <div class="c-title c-title_lg">Discount</div>
+                                                                    </div>
+                                                                    <div class="item-row__desc u-col">
+                                                                        <span class="c-btn c-btn_link c-btn_sm">All Actions</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="tiles-menu tiles-menu_columns">
+                                                        <ul class="tiles-menu__menu u-row">
+                                                            <li class="tiles-menu__item u-col u-col-3-12">
+                                                                <a class="tile-item tile-item_light" href="#" data-quantity="5">
+                                                                    <span class="tile-item__title c-title c-title_lg">5%</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="tiles-menu__item u-col u-col-3-12">
+                                                                <a class="tile-item tile-item_light" href="#" data-quantity="10">
+                                                                    <span class="tile-item__title c-title c-title_lg">10%</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="tiles-menu__item u-col u-col-3-12">
+                                                                <a class="tile-item tile-item_light" href="#" data-quantity="20">
+                                                                    <span class="tile-item__title c-title c-title_lg">20%</span>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="tiles-menu__item u-col u-loaded tiles-menu__item_regular u-col-4-12">
+                                                <a class="tile-item tile-item_" href="#" data-name="SERVICE_FEE" data-public-name="Service Fee">
+                                                    <span class="tile-item__title c-title c-title_lg">Service</span>
+                                                </a>
+                                            </li>
+                                            <li class="tiles-menu__item u-col u-loaded tiles-menu__item_multilevel u-col-4-12">
+                                                <a class="tile-item tile-item_" href="#" data-name="GIFT_CARD" data-public-name="Gift Card">
+                                                    <span class="tile-item__title c-title c-title_lg">Gift Card</span>
+                                                </a>
+                                                <div class="tiles-menu__panel">
+                                                    <div class="tiles-menu__panel-head">
+                                                        <div class="item-row item-row_heading u-row  inner-menu__link item-row_heading-alt">
+                                                            <div class="item-row__inner u-col">
+                                                                <div class="item-row__body u-row u-align-center">
+                                                                    <div class="item-row__title u-col">
+                                                                        <div class="c-title c-title_lg">Gift Card</div>
+                                                                    </div>
+                                                                    <div class="item-row__desc u-col">
+                                                                        <span class="c-btn c-btn_link c-btn_sm">All Actions</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="tiles-menu tiles-menu_columns">
+                                                        <ul class="tiles-menu__menu u-row">
+                                                            <li class="tiles-menu__item u-col u-col-3-12">
+                                                                <a class="tile-item tile-item_light" href="#" data-value="Scan">
+                                                                    <span class="tile-item__title c-title c-title_lg">Scan</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="tiles-menu__item u-col u-col-3-12">
+                                                                <a class="tile-item tile-item_light" href="#" data-value="Type In">
+                                                                    <span class="tile-item__title c-title c-title_lg">Type In</span>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="tiles-menu__item u-col u-loaded tiles-menu__item_multilevel u-col-4-12">
+                                                <a class="tile-item tile-item_" href="#" data-name="POINTS" data-public-name="Points">
+                                                    <span class="tile-item__title c-title c-title_lg">Points</span>
+                                                </a>
+                                                <div class="tiles-menu__panel">
+                                                    <div class="tiles-menu__panel-head">
+                                                        <div class="item-row item-row_heading u-row  inner-menu__link item-row_heading-alt">
+                                                            <div class="item-row__inner u-col">
+                                                                <div class="item-row__body u-row u-align-center">
+                                                                    <div class="item-row__title u-col">
+                                                                        <div class="c-title c-title_lg">Points</div>
+                                                                    </div>
+                                                                    <div class="item-row__desc u-col">
+                                                                        <span class="c-btn c-btn_link c-btn_sm">All Actions</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="tiles-menu tiles-menu_columns">
+                                                        <ul class="tiles-menu__menu u-row">
+                                                            <li class="tiles-menu__item u-col u-col-3-12">
+                                                                <a class="tile-item tile-item_light" href="#" data-value="Scan">
+                                                                    <span class="tile-item__title c-title c-title_lg">Scan</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="tiles-menu__item u-col u-col-3-12">
+                                                                <a class="tile-item tile-item_light" href="#" data-value="Type In">
+                                                                    <span class="tile-item__title c-title c-title_lg">Type In</span>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="tiles-menu__item u-col u-loaded tiles-menu__item_multilevel u-col-4-12">
+                                                <a class="tile-item tile-item_" href="#" data-name="PROMO_CODE" data-public-name="Promo Code">
+                                                    <span class="tile-item__title c-title c-title_lg">Promo Code</span>
+                                                </a>
+                                                <div class="tiles-menu__panel">
+                                                    <div class="tiles-menu__panel-head">
+                                                        <div class="item-row item-row_heading u-row  inner-menu__link item-row_heading-alt">
+                                                            <div class="item-row__inner u-col">
+                                                                <div class="item-row__body u-row u-align-center">
+                                                                    <div class="item-row__title u-col">
+                                                                        <div class="c-title c-title_lg">Promo Code</div>
+                                                                    </div>
+                                                                    <div class="item-row__desc u-col">
+                                                                        <span class="c-btn c-btn_link c-btn_sm">All Actions</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="tiles-menu tiles-menu_columns">
+                                                        <ul class="tiles-menu__menu u-row">
+                                                            <li class="tiles-menu__item u-col u-col-3-12">
+                                                                <a class="tile-item tile-item_light" href="#">
+                                                                    <span class="tile-item__title c-title c-title_lg"></span>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.content -->
+        </div>
+        <!-- /.c-page -->
+        <!--[if lte IE 9]>
+	<script type="text/javascript" src="js/placeMe.min.js" data-skip-moving="true"></script>
+	<script type="text/javascript" src="js/classList.min.js" data-skip-moving="true"></script>
+	<![endif]-->
+        <!-- dev only scripts -->
+        <link rel="stylesheet" href="components/modules/dev-panel/dev-panel.css">
+        <script src="components/modules/dev-panel/dev-panel.js"></script>
+        <div class="dev-panel">
+            <button class="dev-panel__toggle dev-panel__btn dp-toggle" title="Настройки">
+                <svg class="dp-toggle__ico" viewBox="0 0 46 44" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2 8h6v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8h20a2 2 0 0 0 0-4H24V2a2 2 0 0 0-2-2H10a2 2 0 0 0-2 2v2H2a2 2 0 0 0 0 4zm10-4h8v4h-8V4zM44 20h-6v-2a2 2 0 0 0-2-2H24a2 2 0 0 0-2 2v2H2a2 2 0 0 0 0 4h20v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2h6a2 2 0 0 0 0-4zm-10 4h-8v-4h8v4zM44 36H24v-2a2 2 0 0 0-2-2H10a2 2 0 0 0-2 2v2H2a2 2 0 0 0 0 4h6v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2h20a2 2 0 0 0 0-4zm-24 4h-8v-4h8v4z" /></svg>
+                <span class="u-hidden-visually">Настройки</span>
+            </button>
+            <div class="dev-panel__panel">
+                <div class="dev-panel__section dp-section">
+                    <div class="dp-section__body">
+                        <div class="dp-acn" data-initial-state="opened">
+                            <div class="dp-acn__head">
+                                <button class="dp-acn__toggle" type="button" aria-expanded="false">
+                                    <span class="dp-acn__title dp-title">Содержание</span>
+                                </button>
+                            </div>
+                            <!-- /.dp-acn__head -->
+                            <div class="dp-acn__body">
+                                <div class="dp-acn__inner">
+                                    <div id="dp-toc"></div>
+                                </div>
+                                <!-- /.dp-acn__inner -->
+                            </div>
+                            <!-- /.dp-acn__body -->
+                        </div>
+                        <!-- /.dp-acn -->
+                    </div>
+                    <!-- /.dp-section__body -->
+                </div>
+                <!-- /.dev-panel__section -->
+                <div class="dev-panel__section dp-section">
+                    <div class="dp-section__body">
+                        <div class="dp-acn" data-initial-state="">
+                            <div class="dp-acn__head">
+                                <button class="dp-acn__toggle" type="button" aria-expanded="false">
+                                    <span class="dp-acn__title dp-title">Modernizr</span>
+                                </button>
+                            </div>
+                            <!-- /.dp-acn__head -->
+                            <div class="dp-acn__body">
+                                <div class="dp-acn__inner">
+                                    <div id="dp-features"></div>
+                                </div>
+                                <!-- /.dp-acn__inner -->
+                            </div>
+                            <!-- /.dp-acn__body -->
+                        </div>
+                        <!-- /.dp-acn -->
+                    </div>
+                    <!-- /.dp-section__body -->
+                </div>
+                <!-- /.dev-panel__section -->
+            </div>
+            <!-- /.dev-panel__panel -->
+        </div>
+        <!-- /.dev-panel -->
+    </body>
+</html>
